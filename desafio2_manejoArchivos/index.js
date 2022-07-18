@@ -12,9 +12,7 @@ class Contenedor {
         try {
             this.Archiv.push(JSON.stringify(objeto));
             fs.writeFileSync(this.RutaArchivo, JSON.stringify(this.Archiv));
-            console.log(
-                `has agregado : ${JSON.stringify(objeto)}\n su id: ${objeto.id}`
-            );
+            return objeto.id
         } catch (err) {
             console.error("error en metodo save()", err);
         }
@@ -32,14 +30,10 @@ class Contenedor {
     deleteById(numId) {
         let finfElemenDelet = JSON.parse(fs.readFileSync(`${this.RutaArchivo}`, "utf-8")).map((element) => JSON.parse(element));
         let fil = JSON.stringify(finfElemenDelet.filter((el) => el.id !== numId));
-        fs.writeFileSync(this.RutaArchivo, JSON.stringify(fil));
+        return fs.writeFileSync(this.RutaArchivo, JSON.stringify(fil));
     }
     deleteAll() {
-        fs.writeFileSync(`${this.RutaArchivo}`, JSON.stringify([]));
-    }
-    getIdAleat() {
-        let arch = JSON.parse(fs.readFileSync(`${this.RutaArchivo}`, "utf-8")).map((itm) => JSON.parse(itm))
-        return Math.floor(Math.random() * (arch.length - 1)) + 1
+        return fs.writeFileSync(`${this.RutaArchivo}`, JSON.stringify([]));
     }
 }
 
@@ -55,22 +49,10 @@ const newProduct2 = {
     price: 18300,
     thumb: "rutaimg.jpg",
 };
-const newProduct3 = {
-    title: "producto 3",
-    price: 15300,
-    thumb: "rutaimg.jpg",
-};
-const newProduct4 = {
-    title: "producto 4",
-    price: 11300,
-    thumb: "rutaimg.jpg",
-};
 
 
 const prueba = new Contenedor(rutaProductos);
 prueba.save(newProduct1);
 prueba.save(newProduct2);
-prueba.save(newProduct3);
-prueba.save(newProduct4);
-console.log(prueba.getById(prueba.getIdAleat()));
+console.log(prueba.getById(1));
 console.log(prueba.getAll());
